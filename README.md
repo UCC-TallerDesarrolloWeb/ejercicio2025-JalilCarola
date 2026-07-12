@@ -20,4 +20,10 @@ Aula virtual: [Taller de Desarrollo Web](https://presencial.ucc.edu.ar/course/vi
 | Email | 2403755@ucc.edu.ar |
 | GitHub | [@JalilCarola](https://github.com/JalilCarola) |
 
+## Tecnologías
+
+- HTML5
+- CSS3
+- JavaScript
+
 
