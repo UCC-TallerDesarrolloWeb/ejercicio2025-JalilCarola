@@ -3,9 +3,43 @@
 <head>
     <meta charset="UTF-8">
     <title>Ejercicio Columnas</title>
+    <style>
+        /* Estilo por tag: aplica a todo el body */
+        body {
+            font-family: Verdana, Arial, sans-serif;
+        }
+
+        /* Estilo por ID: elemento único */
+        #tituloPrincipal {
+            color: #2c3e50;
+        }
+
+        /* Estilo por clase: se puede repetir en varios elementos */
+        .tituloNoticia {
+            font-size: 1.3em;
+        }
+
+        /* Layout de 2 columnas para el contenido de la noticia */
+        article {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+
+        /* Pseudo-clases del link "Legal" */
+        a:link, a:visited {
+            color: #1a0dab;
+            text-decoration: none;
+        }
+        a:hover {
+            font-size: 1.2em;
+        }
+        a:active {
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body>
-<!--Cree los estilos CSS necesarios para que el texto se visualice en 2 columnas-->
 <header>
     <h1 id="tituloPrincipal">Diario On-line</h1>
 </header>

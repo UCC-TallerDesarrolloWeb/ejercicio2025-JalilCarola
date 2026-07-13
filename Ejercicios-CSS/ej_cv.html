@@ -3,28 +3,89 @@
 <head>
     <meta charset="UTF-8">
     <title>CV Nombre Apellido</title>
+    <link rel="icon" href="imagenes/avatar.svg" type="image/svg+xml">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* Estilo por TAG: aplica a todo el body */
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            text-align: center;
+            background: linear-gradient(to bottom, #dbeeff, #f5f0ff);
+            margin: 0;
+            padding: 30px;
+        }
+
+        h1, h2 {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+        }
+
+        /* Estilo por CLASE: se repite en varios divs (tarjetas de contenido) */
+        .card {
+            display: inline-block;
+            width: 60%;
+            max-width: 500px;
+            margin: 15px auto;
+            padding: 20px;
+            border: 1px solid #b4c5ff;
+            border-radius: 15px;
+            background-color: rgba(180, 197, 255, 0.25);
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .card h4 {
+            margin-top: 0;
+        }
+
+        /* Estilo por ID: elemento único (la cabecera con la foto) */
+        #perfil {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 60%;
+            max-width: 500px;
+            margin: 0 auto 15px auto;
+            padding: 20px;
+            border-radius: 15px;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        #perfil img {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            border: 3px solid #ffffff;
+        }
+
+        #perfil div {
+            text-align: left;
+        }
+    </style>
 </head>
 <body>
 
-<div>
-    <h1>Nombre Alumno</h1>
-    <h2>Ing. en Computacion</h2>
+<div id="perfil">
+    <img src="imagenes/avatar.svg" alt="Foto de perfil genérica">
+    <div>
+        <h1>Nombre Alumno</h1>
+        <h2>Ing. en Computación</h2>
+    </div>
 </div>
 
-<div>
+<div class="card">
     <h3>Datos Personales</h3>
     <p><span>Fecha de Nacimiento:</span> dd/mm/aaaa</p>
     <p><span>Email:</span> email@email.com</p>
 </div>
 
-<div>
-    <h3>Formacion Academica</h3>
+<div class="card">
+    <h3>Formación Académica</h3>
     <p><span>Carrera:</span> Ingeniería XXXXX</p>
     <p><span>Universidad:</span> Universidad Católica de Córdoba</p>
     <p><span>Año de Ingreso:</span> 2018</p>
 </div>
 
-<div>
+<div class="card">
     <h3>Cursos</h3>
 
     <div>
