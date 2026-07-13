@@ -15,6 +15,7 @@ function Header() {
                 <Link to="/">Home</Link>
                 <Link to="/login">Login</Link>
                 <Link to="/actividades">Actividades</Link>
+                <Link to="/poke">Poke</Link>
             </nav>
             {logueado && <button onClick={handleLogout}>Logout</button>}
         </header>

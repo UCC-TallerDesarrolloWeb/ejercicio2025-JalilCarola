@@ -95,3 +95,15 @@ body {
         cursor: pointer;
     }
 }
+
+.poke-card img {
+    width: 96px;
+    margin: 0 auto;
+}
+
+.poke-container {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 0 20px;
+    text-align: center;
+}
