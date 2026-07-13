@@ -45,10 +45,32 @@
             margin: 10px 0 0 0;
         }
 
+        .card .cantidad {
+            color: #777;
+            font-size: 0.85em;
+        }
+
+        .card button {
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
         #vacio {
             text-align: center;
             font-style: italic;
             color: #777;
+        }
+
+        #resumen {
+            text-align: center;
+            font-size: 1.2em;
+            margin-top: 10px;
+        }
+
+        #vaciarBtn {
+            display: block;
+            margin: 10px auto;
+            cursor: pointer;
         }
     </style>
 </head>
@@ -60,35 +82,102 @@
 
 <h1>Carrito de Compras</h1>
 
+<button id="vaciarBtn" onclick="vaciarCarrito()">Vaciar Carrito</button>
+
 <div id="contenedorCarrito" class="grid-container"></div>
+
+<p id="resumen"></p>
 
 <script>
     /**
-     * Lee el carrito guardado en LocalStorage y genera una tarjeta por cada
-     * producto agregado, dentro de #contenedorCarrito.
+     * Formatea un numero como precio en pesos, ej: 3123.45 -> "$3.123,45"
+     * @method formatearPrecio
+     * @param {number} precio - valor numerico del precio
+     * @return {string} precio formateado como moneda
+     */
+    const formatearPrecio = (precio) => {
+        return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(precio);
+    };
+
+    /**
+     * Agrupa productos repetidos del carrito, sumando cuantas veces se agrego cada uno.
+     * @method agruparCarrito
+     * @param {Array} carrito - array de productos guardado en LocalStorage
+     * @return {Array} lista de productos unicos, cada uno con su "cantidad"
+     */
+    const agruparCarrito = (carrito) => {
+        const agrupado = [];
+        carrito.forEach((producto) => {
+            const existente = agrupado.find((p) => p.nombre === producto.nombre);
+            if (existente) {
+                existente.cantidad += 1;
+            } else {
+                agrupado.push({ ...producto, cantidad: 1 });
+            }
+        });
+        return agrupado;
+    };
+
+    /**
+     * Lee el carrito guardado en LocalStorage, lo agrupa, y genera una tarjeta
+     * por cada producto distinto (con su cantidad), ademas del total general.
      * @method renderCarrito
      * @return {void} no retorna nada, actualiza el DOM directamente
      */
     const renderCarrito = () => {
         const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
         const contenedor = document.getElementById("contenedorCarrito");
+        const resumen = document.getElementById("resumen");
 
         if (carrito.length === 0) {
             contenedor.innerHTML = "<p id='vacio'>Tu carrito está vacío.</p>";
+            resumen.innerText = "";
             return;
         }
 
+        const agrupado = agruparCarrito(carrito);
         let html = "";
-        carrito.forEach((producto) => {
+        agrupado.forEach((producto) => {
             html += `
                 <div class="card">
                     <img src="../Ejercicios-JavaScript/images/${producto.imagen}" alt="${producto.nombre}">
                     <h3>${producto.nombre}</h3>
-                    <p>$${producto.precio}</p>
+                    <p class="cantidad">Cantidad: ${producto.cantidad}</p>
+                    <p>${formatearPrecio(producto.precio * producto.cantidad)}</p>
+                    <button onclick="eliminarDelCarrito('${producto.nombre}')">Eliminar</button>
                 </div>
             `;
         });
         contenedor.innerHTML = html;
+
+        const total = carrito.reduce((acumulado, producto) => acumulado + producto.precio, 0);
+        resumen.innerText = `Total: ${formatearPrecio(total)} (${carrito.length} producto/s)`;
+    };
+
+    /**
+     * Elimina UNA unidad del producto indicado (por nombre) del carrito, usando splice.
+     * @method eliminarDelCarrito
+     * @param {string} nombre - nombre del producto a eliminar
+     * @return {void} no retorna nada, actualiza LocalStorage y vuelve a renderizar
+     */
+    const eliminarDelCarrito = (nombre) => {
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        const index = carrito.findIndex((producto) => producto.nombre === nombre);
+        if (index !== -1) {
+            carrito.splice(index, 1);
+        }
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        renderCarrito();
+    };
+
+    /**
+     * Vacia por completo el carrito guardado en LocalStorage.
+     * @method vaciarCarrito
+     * @return {void} no retorna nada, actualiza LocalStorage y vuelve a renderizar
+     */
+    const vaciarCarrito = () => {
+        localStorage.removeItem("carrito");
+        renderCarrito();
     };
 </script>
 </body>

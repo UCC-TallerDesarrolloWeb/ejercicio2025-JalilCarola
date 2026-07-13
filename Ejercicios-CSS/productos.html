@@ -13,6 +13,32 @@
             text-align: center;
         }
 
+        nav {
+            text-align: center;
+            padding: 10px;
+        }
+
+        #filtros {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin: 0 20px 10px 20px;
+            padding: 15px;
+        }
+
+        #filtros label {
+            font-size: 0.9em;
+        }
+
+        #filtros input[type="number"] {
+            width: 80px;
+        }
+
         .grid-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -63,11 +89,42 @@
 </head>
 <body onload="renderProductos()">
 
-<nav style="text-align: center; padding: 10px;">
-    <a href="carrito.html">Ver Carrito de Compras</a>
+<nav>
+    <a href="carrito.html" id="linkCarrito">Ver Carrito de Compras</a>
 </nav>
 
 <h1>Nuestros Productos</h1>
+
+<div id="filtros">
+    <label>Buscar: <input type="text" id="filtroTexto" oninput="renderProductos()" placeholder="nombre o descripción"></label>
+
+    <label>Precio min: <input type="number" id="filtroPrecioMin" oninput="renderProductos()" placeholder="0"></label>
+    <label>Precio max: <input type="number" id="filtroPrecioMax" oninput="renderProductos()" placeholder="999999"></label>
+
+    <label>Marca:
+        <select id="filtroMarca" onchange="renderProductos()">
+            <option value="">Todas</option>
+            <option value="Gran Marc">Gran Marc</option>
+            <option value="Daedo">Daedo</option>
+        </select>
+    </label>
+
+    <span>Categoría:
+        <label><input type="checkbox" class="filtroCategoria" value="Protectores" onchange="renderProductos()"> Protectores</label>
+        <label><input type="checkbox" class="filtroCategoria" value="Dobok" onchange="renderProductos()"> Dobok</label>
+        <label><input type="checkbox" class="filtroCategoria" value="Entrenamiento" onchange="renderProductos()"> Entrenamiento</label>
+    </span>
+
+    <label>Ordenar por:
+        <select id="ordenSeleccionado" onchange="renderProductos()">
+            <option value="">Sin orden</option>
+            <option value="precio-asc">Precio: menor a mayor</option>
+            <option value="precio-desc">Precio: mayor a menor</option>
+            <option value="nombre-asc">Nombre: A-Z</option>
+            <option value="nombre-desc">Nombre: Z-A</option>
+        </select>
+    </label>
+</div>
 
 <div id="contenedorProductos" class="grid-container"></div>
 
@@ -79,32 +136,78 @@
 <script src="../Ejercicios-JavaScript/tienda.js"></script>
 <script>
     /**
-     * Genera dinamicamente una tarjeta por cada producto de la constante "productos" (tienda.js)
-     * y las inserta dentro de #contenedorProductos usando innerHTML.
+     * Formatea un numero como precio en pesos, ej: 3123.45 -> "$3.123,45"
+     * @method formatearPrecio
+     * @param {number} precio - valor numerico del precio
+     * @return {string} precio formateado como moneda
+     */
+    const formatearPrecio = (precio) => {
+        return new Intl.NumberFormat("es-AR", { style: "currency", currency: "ARS" }).format(precio);
+    };
+
+    /**
+     * Aplica los filtros de texto, precio, marca y categoria sobre el array de productos,
+     * y despues aplica el orden seleccionado (si hay alguno).
+     * @method filtrarYOrdenarProductos
+     * @return {Array} lista de productos filtrada y ordenada, cada uno con su indice original
+     */
+    const filtrarYOrdenarProductos = () => {
+        const texto = document.getElementById("filtroTexto").value.toLowerCase();
+        const precioMin = parseFloat(document.getElementById("filtroPrecioMin").value) || 0;
+        const precioMax = parseFloat(document.getElementById("filtroPrecioMax").value) || Infinity;
+        const marca = document.getElementById("filtroMarca").value;
+        const categoriasElegidas = Array.from(document.querySelectorAll(".filtroCategoria:checked")).map(chk => chk.value);
+
+        let resultado = productos
+            .map((producto, index) => ({ ...producto, indiceOriginal: index }))
+            .filter(producto => {
+                const coincideTexto = producto.nombre.toLowerCase().includes(texto) || producto.description.toLowerCase().includes(texto);
+                const coincidePrecio = producto.precio >= precioMin && producto.precio <= precioMax;
+                const coincideMarca = marca === "" || producto.marca === marca;
+                const coincideCategoria = categoriasElegidas.length === 0 || categoriasElegidas.includes(producto.categoria);
+                return coincideTexto && coincidePrecio && coincideMarca && coincideCategoria;
+            });
+
+        const orden = document.getElementById("ordenSeleccionado").value;
+        if (orden === "precio-asc") resultado.sort((a, b) => a.precio - b.precio);
+        else if (orden === "precio-desc") resultado.sort((a, b) => b.precio - a.precio);
+        else if (orden === "nombre-asc") resultado.sort((a, b) => a.nombre.localeCompare(b.nombre));
+        else if (orden === "nombre-desc") resultado.sort((a, b) => b.nombre.localeCompare(a.nombre));
+
+        return resultado;
+    };
+
+    /**
+     * Genera una tarjeta por cada producto (ya filtrado y ordenado) y actualiza
+     * el contador de productos en el link al carrito.
      * @method renderProductos
      * @return {void} no retorna nada, actualiza el DOM directamente
      */
     const renderProductos = () => {
         const contenedor = document.getElementById("contenedorProductos");
+        const lista = filtrarYOrdenarProductos();
+
         let html = "";
-        productos.forEach((producto, index) => {
+        lista.forEach((producto) => {
             html += `
                 <div class="card">
                     <img src="../Ejercicios-JavaScript/images/${producto.imagen}" alt="${producto.nombre}">
                     <h3>${producto.nombre}</h3>
-                    <p>$${producto.precio}</p>
-                    <button onclick="verDetalle(${index})">Ver detalle de Producto</button>
-                    <button onclick="agregarAlCarrito(${index})">Agregar al carrito</button>
+                    <p>${formatearPrecio(producto.precio)}</p>
+                    <button onclick="verDetalle(${producto.indiceOriginal})">Ver detalle de Producto</button>
+                    <button onclick="agregarAlCarrito(${producto.indiceOriginal})">Agregar al carrito</button>
                 </div>
             `;
         });
-        contenedor.innerHTML = html;
+        contenedor.innerHTML = html || "<p>No hay productos que coincidan con la búsqueda.</p>";
+
+        actualizarContadorCarrito();
     };
 
     /**
      * Muestra el dialogo con el detalle completo del producto seleccionado.
      * @method verDetalle
-     * @param {number} index - posicion del producto dentro del array productos
+     * @param {number} index - posicion del producto dentro del array productos original
      * @return {void} no retorna nada, abre el dialogo
      */
     const verDetalle = (index) => {
@@ -116,7 +219,7 @@
             <p><strong>Categoría:</strong> ${producto.categoria}</p>
             <p><strong>Marca:</strong> ${producto.marca}</p>
             <p><strong>Talles:</strong> ${producto.talle.join(", ")}</p>
-            <p><strong>Precio:</strong> $${producto.precio}</p>
+            <p><strong>Precio:</strong> ${formatearPrecio(producto.precio)}</p>
         `;
         document.getElementById("dialogoDetalle").showModal();
     };
@@ -125,7 +228,7 @@
      * Agrega el producto seleccionado al carrito guardado en LocalStorage.
      * Si todavia no hay carrito, lo crea como un array vacio.
      * @method agregarAlCarrito
-     * @param {number} index - posicion del producto dentro del array productos
+     * @param {number} index - posicion del producto dentro del array productos original
      * @return {void} no retorna nada, actualiza LocalStorage
      */
     const agregarAlCarrito = (index) => {
@@ -133,7 +236,18 @@
         const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
         carrito.push(producto);
         localStorage.setItem("carrito", JSON.stringify(carrito));
+        actualizarContadorCarrito();
         alert(`"${producto.nombre}" se agregó al carrito`);
+    };
+
+    /**
+     * Actualiza el texto del link al carrito para mostrar la cantidad de productos guardados.
+     * @method actualizarContadorCarrito
+     * @return {void} no retorna nada, actualiza el DOM directamente
+     */
+    const actualizarContadorCarrito = () => {
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        document.getElementById("linkCarrito").innerText = `Ver Carrito de Compras (${carrito.length})`;
     };
 </script>
 </body>
