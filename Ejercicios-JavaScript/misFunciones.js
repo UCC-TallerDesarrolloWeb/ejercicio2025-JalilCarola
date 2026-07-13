@@ -7,6 +7,9 @@
  * @return {void} no retorna nada, actualiza el DOM directamente
  */
 const convertirUnidades = (unidad, valor) => {
+    if (valor.includes(",")) {
+        valor = valor.replace(",", ".");
+    }
     valor = parseFloat(valor);
     if (isNaN(valor)) {
         return;
@@ -43,4 +46,63 @@ const gradosARadianes = (valor) => {
     }
     const radianes = valor * (Math.PI / 180);
     document.getElementById("radianes").value = radianes.toFixed(4);
+};
+
+/**
+ * Muestra u oculta el div "unDiv" segun el radio button seleccionado.
+ * @method mostrarOcultarDiv
+ * @param {string} valor - value del radio button seleccionado (val_mostrar o val_ocultar)
+ * @return {void} no retorna nada, actualiza el DOM directamente
+ */
+const mostrarOcultarDiv = (valor) => {
+    if (valor === "val_mostrar") {
+        document.getElementById("unDiv").style.display = "block";
+    } else if (valor === "val_ocultar") {
+        document.getElementById("unDiv").style.display = "none";
+    }
+};
+
+/**
+ * Suma los valores de los campos nums1 y nums2 y muestra el resultado en totalS.
+ * @method sumar
+ * @return {void} no retorna nada, actualiza el DOM directamente
+ */
+const sumar = () => {
+    const num1 = Number(document.getElementById("nums1").value);
+    const num2 = Number(document.getElementById("nums2").value);
+    document.getElementById("totalS").innerHTML = num1 + num2;
+};
+
+/**
+ * Resta los valores de los campos numr1 y numr2 y muestra el resultado en totalR.
+ * @method restar
+ * @return {void} no retorna nada, actualiza el DOM directamente
+ */
+const restar = () => {
+    const num1 = Number(document.getElementById("numr1").value);
+    const num2 = Number(document.getElementById("numr2").value);
+    document.getElementById("totalR").innerHTML = num1 - num2;
+};
+
+/**
+ * Multiplica los valores de los campos numm1 y numm2 y muestra el resultado en totalM.
+ * @method multiplicar
+ * @return {void} no retorna nada, actualiza el DOM directamente
+ */
+const multiplicar = () => {
+    const num1 = Number(document.getElementById("numm1").value);
+    const num2 = Number(document.getElementById("numm2").value);
+    document.getElementById("totalM").innerHTML = num1 * num2;
+};
+
+/**
+ * Divide los valores de los campos numd1 y numd2 y muestra el resultado en totalD.
+ * Si el divisor es 0, muestra un mensaje de error en vez del resultado.
+ * @method dividir
+ * @return {void} no retorna nada, actualiza el DOM directamente
+ */
+const dividir = () => {
+    const num1 = Number(document.getElementById("numd1").value);
+    const num2 = Number(document.getElementById("numd2").value);
+    document.getElementById("totalD").innerHTML = num2 === 0 ? "Error: division por 0" : num1 / num2;
 };
