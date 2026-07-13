@@ -1,0 +1,42 @@
+@use 'variables';
+
+body {
+    font-family: Arial, sans-serif;
+    color: variables.$color-texto;
+
+    h1 {
+        color: variables.$color-primario;
+    }
+
+    nav {
+        background-color: variables.$color-secundario;
+        padding: 10px;
+
+        a {
+            color: white;
+            margin-right: 15px;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+@mixin boton($color, $radius: 4px) {
+    background: $color;
+    border-radius: $radius;
+    padding: 8px 12px;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.btn-primario {
+    @include boton(variables.$color-primario, 8px);
+}
+
+.btn-secundario {
+    @include boton(variables.$color-secundario);
+}

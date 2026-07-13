@@ -1,0 +1,39 @@
+body {
+  font-family: Arial, sans-serif;
+  color: #333333;
+}
+body h1 {
+  color: #3498db;
+}
+body nav {
+  background-color: #2ecc71;
+  padding: 10px;
+}
+body nav a {
+  color: white;
+  margin-right: 15px;
+  text-decoration: none;
+}
+body nav a:hover {
+  text-decoration: underline;
+}
+
+.btn-primario {
+  background: #3498db;
+  border-radius: 8px;
+  padding: 8px 12px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+.btn-secundario {
+  background: #2ecc71;
+  border-radius: 4px;
+  padding: 8px 12px;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+
+/*# sourceMappingURL=styles.css.map */

@@ -1,0 +1,15 @@
+@mixin estilos-mobile {
+    header {
+        flex-direction: column;
+        text-align: center;
+    }
+
+    nav ul {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    section .portafolio {
+        grid-template-columns: 1fr;
+    }
+}
