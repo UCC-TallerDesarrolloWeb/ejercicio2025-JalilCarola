@@ -16,6 +16,8 @@ function Header() {
                 <Link to="/login">Login</Link>
                 <Link to="/actividades">Actividades</Link>
                 <Link to="/poke">Poke</Link>
+                <Link to="/tienda">Tienda</Link>
+                <Link to="/carrito">Carrito</Link>
             </nav>
             {logueado && <button onClick={handleLogout}>Logout</button>}
         </header>

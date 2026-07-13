@@ -40,5 +40,43 @@
         { "dia": 5, "hora": "20:00 - 21:00" }
       ]
     }
+  ],
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Cabezal Sparring",
+      "descripcion": "Cabezal de Sparring para entrenamientos y torneos.",
+      "categoria": "Protectores",
+      "marca": "Gran Marc",
+      "precio": 35000,
+      "imagen": "cabezal.svg"
+    },
+    {
+      "id": 2,
+      "nombre": "Dobok Dan",
+      "descripcion": "Dobok aprobado para torneos internacionales.",
+      "categoria": "Dobok",
+      "marca": "Daedo",
+      "precio": 115000,
+      "imagen": "dobok.svg"
+    },
+    {
+      "id": 3,
+      "nombre": "Escudo de Potencia",
+      "descripcion": "Escudo de potencia para entrenamientos.",
+      "categoria": "Entrenamiento",
+      "marca": "Gran Marc",
+      "precio": 51700,
+      "imagen": "escudo.svg"
+    },
+    {
+      "id": 4,
+      "nombre": "Guantes 10 onzas",
+      "descripcion": "Guantes de Sparring habilitados para torneos internacionales.",
+      "categoria": "Protectores",
+      "marca": "Daedo",
+      "precio": 35000,
+      "imagen": "guantes.svg"
+    }
   ]
 }
