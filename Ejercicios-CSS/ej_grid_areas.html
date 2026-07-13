@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Ejercicio Grid Areas</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            grid-template-areas:
+                "header header header header"
+                "aside main main main"
+                "footer footer footer footer";
+            gap: 10px;
+        }
+
+        header  { grid-area: header; background-color: #2196F3; }
+        aside   { grid-area: aside;  background-color: #b4c5ff; }
+        main    { grid-area: main;   background-color: #dbeeff; }
+        footer  { grid-area: footer; background-color: #2196F3; }
+
+        header, footer {
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        aside, main {
+            padding: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="grid-container">
+    <header>
+        <h1>Mi Sitio</h1>
+        <nav>Inicio | Productos | Contacto</nav>
+    </header>
+    <aside>
+        <h3>Categorías</h3>
+        <p>Karate</p>
+        <p>Taekwondo</p>
+        <p>Boxeo</p>
+    </aside>
+    <main>
+        <h2>Contenido principal</h2>
+        <p>Esta sección ocupa 3 de las 4 columnas imaginarias del grid, mientras que el aside ocupa solo 1.</p>
+    </main>
+    <footer>
+        <p>&copy; 2026 Mi Sitio</p>
+    </footer>
+</div>
+
+</body>
+</html>

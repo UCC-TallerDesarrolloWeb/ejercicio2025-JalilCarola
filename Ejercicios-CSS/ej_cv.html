@@ -38,16 +38,28 @@
         }
 
         /* Estilo por ID: elemento único (la cabecera con la foto) */
+        /* position: fixed la saca del flujo normal de la pagina y la deja pegada
+           a una posicion fija de la pantalla (no se mueve al hacer scroll) */
         #perfil {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+
             display: flex;
             align-items: center;
             gap: 20px;
             width: 60%;
             max-width: 500px;
-            margin: 0 auto 15px auto;
             padding: 20px;
             border-radius: 15px;
+            background-color: white;
             box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        /* Como el #perfil ahora esta "fixed", ya no ocupa espacio en el flujo normal:
+           dejamos un margen arriba en el resto del contenido para que no quede tapado */
+        .card:first-of-type {
+            margin-top: 160px;
         }
 
         #perfil img {
