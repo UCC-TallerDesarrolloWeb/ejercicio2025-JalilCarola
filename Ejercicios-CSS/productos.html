@@ -39,38 +39,102 @@
             font-size: 1em;
             margin: 10px 0 0 0;
         }
+
+        .card button {
+            margin-top: 8px;
+            cursor: pointer;
+        }
+
+        dialog {
+            border-radius: 10px;
+            border: none;
+            box-shadow: 3px 3px 15px rgba(0, 0, 0, 0.3);
+            max-width: 350px;
+        }
+
+        dialog img {
+            width: 150px;
+        }
+
+        dialog::backdrop {
+            background: rgba(0, 0, 0, 0.5);
+        }
     </style>
 </head>
-<body>
+<body onload="renderProductos()">
+
+<nav style="text-align: center; padding: 10px;">
+    <a href="carrito.html">Ver Carrito de Compras</a>
+</nav>
 
 <h1>Nuestros Productos</h1>
 
-<div class="grid-container">
-    <div class="card">
-        <img src="../Ejercicios-JavaScript/images/dobok.webp" alt="Dobok">
-        <h3>Dobok</h3>
-    </div>
-    <div class="card">
-        <img src="../Ejercicios-JavaScript/images/protectores-manos.webp" alt="Protectores de manos">
-        <h3>Protectores de Manos</h3>
-    </div>
-    <div class="card">
-        <img src="../Ejercicios-JavaScript/images/protectores-pie.webp" alt="Protectores de pie">
-        <h3>Protectores de Pie</h3>
-    </div>
-    <div class="card">
-        <img src="../Ejercicios-JavaScript/images/cabezal-cerrado.webp" alt="Cabezal cerrado">
-        <h3>Cabezal Cerrado</h3>
-    </div>
-    <div class="card">
-        <img src="../Ejercicios-JavaScript/images/escudo-potencia.webp" alt="Escudo de potencia">
-        <h3>Escudo de Potencia</h3>
-    </div>
-    <div class="card">
-        <img src="../Ejercicios-JavaScript/images/foco-con-dedos.webp" alt="Foco con dedos">
-        <h3>Foco con Dedos</h3>
-    </div>
-</div>
+<div id="contenedorProductos" class="grid-container"></div>
 
+<dialog id="dialogoDetalle">
+    <div id="detalleContenido"></div>
+    <button onclick="document.getElementById('dialogoDetalle').close()">Cerrar</button>
+</dialog>
+
+<script src="../Ejercicios-JavaScript/tienda.js"></script>
+<script>
+    /**
+     * Genera dinamicamente una tarjeta por cada producto de la constante "productos" (tienda.js)
+     * y las inserta dentro de #contenedorProductos usando innerHTML.
+     * @method renderProductos
+     * @return {void} no retorna nada, actualiza el DOM directamente
+     */
+    const renderProductos = () => {
+        const contenedor = document.getElementById("contenedorProductos");
+        let html = "";
+        productos.forEach((producto, index) => {
+            html += `
+                <div class="card">
+                    <img src="../Ejercicios-JavaScript/images/${producto.imagen}" alt="${producto.nombre}">
+                    <h3>${producto.nombre}</h3>
+                    <p>$${producto.precio}</p>
+                    <button onclick="verDetalle(${index})">Ver detalle de Producto</button>
+                    <button onclick="agregarAlCarrito(${index})">Agregar al carrito</button>
+                </div>
+            `;
+        });
+        contenedor.innerHTML = html;
+    };
+
+    /**
+     * Muestra el dialogo con el detalle completo del producto seleccionado.
+     * @method verDetalle
+     * @param {number} index - posicion del producto dentro del array productos
+     * @return {void} no retorna nada, abre el dialogo
+     */
+    const verDetalle = (index) => {
+        const producto = productos[index];
+        document.getElementById("detalleContenido").innerHTML = `
+            <h2>${producto.nombre}</h2>
+            <img src="../Ejercicios-JavaScript/images/${producto.imagen}" alt="${producto.nombre}">
+            <p>${producto.description}</p>
+            <p><strong>Categoría:</strong> ${producto.categoria}</p>
+            <p><strong>Marca:</strong> ${producto.marca}</p>
+            <p><strong>Talles:</strong> ${producto.talle.join(", ")}</p>
+            <p><strong>Precio:</strong> $${producto.precio}</p>
+        `;
+        document.getElementById("dialogoDetalle").showModal();
+    };
+
+    /**
+     * Agrega el producto seleccionado al carrito guardado en LocalStorage.
+     * Si todavia no hay carrito, lo crea como un array vacio.
+     * @method agregarAlCarrito
+     * @param {number} index - posicion del producto dentro del array productos
+     * @return {void} no retorna nada, actualiza LocalStorage
+     */
+    const agregarAlCarrito = (index) => {
+        const producto = productos[index];
+        const carrito = JSON.parse(localStorage.getItem("carrito")) || [];
+        carrito.push(producto);
+        localStorage.setItem("carrito", JSON.stringify(carrito));
+        alert(`"${producto.nombre}" se agregó al carrito`);
+    };
+</script>
 </body>
 </html>

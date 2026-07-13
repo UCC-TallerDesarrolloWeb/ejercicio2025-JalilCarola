@@ -106,3 +106,32 @@ const dividir = () => {
     const num2 = Number(document.getElementById("numd2").value);
     document.getElementById("totalD").innerHTML = num2 === 0 ? "Error: division por 0" : num1 / num2;
 };
+
+/**
+ * Guarda en LocalStorage la distancia y unidad ingresadas en primerWeb.html,
+ * y navega a segundaWeb.html para mostrarlas.
+ * @method irASegundaWeb
+ * @return {void} no retorna nada, guarda datos y cambia de pagina
+ */
+const irASegundaWeb = () => {
+    const distancia = document.getElementById("distancia").value;
+    const selectUnidades = document.getElementById("unidades");
+    const unidadTexto = selectUnidades.options[selectUnidades.selectedIndex].text;
+
+    localStorage.setItem("distancia", distancia);
+    localStorage.setItem("unidad", unidadTexto);
+
+    window.location.href = "segundaWeb.html";
+};
+
+/**
+ * Lee de LocalStorage la distancia y unidad guardadas en primerWeb.html,
+ * y las muestra en el campo "dist" de segundaWeb.html.
+ * @method cargarDistancia
+ * @return {void} no retorna nada, actualiza el DOM directamente
+ */
+const cargarDistancia = () => {
+    const distancia = localStorage.getItem("distancia");
+    const unidad = localStorage.getItem("unidad");
+    document.getElementById("dist").value = `${distancia} ${unidad}`;
+};
